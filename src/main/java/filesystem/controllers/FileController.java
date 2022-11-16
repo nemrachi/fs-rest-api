@@ -65,7 +65,7 @@ public class FileController {
             response.setFileContent(content);
             return response;
         } catch (Exception e) {
-            return exceptionResponse("", e);
+            return exceptionResponse(file, e);
         }
     }
 
