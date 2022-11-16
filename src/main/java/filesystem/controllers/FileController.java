@@ -7,8 +7,6 @@ import filesystem.entities.FileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("file")
 public class FileController {
@@ -60,7 +58,7 @@ public class FileController {
     }
 
     @GetMapping("/content")
-    public FileResponse getFileContent(@RequestParam String file) throws IOException {
+    public FileResponse getFileContent(@RequestParam String file) {
         try {
             FileResponse response = new FileResponse(file, Status.OK);
             String content = storageService.getFileContent(file);
