@@ -87,8 +87,8 @@ public class DirectoryController {
         }
     }
 
-    private DirResponse exceptionResponse(String file, Exception e) {
-        DirResponse response = new DirResponse(file, Status.INTERNAL_ERROR);
+    private DirResponse exceptionResponse(String dir, Exception e) {
+        DirResponse response = new DirResponse(dir, Status.INTERNAL_ERROR);
         response.setError(new ErrorResponse(e.getMessage(), e.getClass().getCanonicalName()));
         return response;
     }
