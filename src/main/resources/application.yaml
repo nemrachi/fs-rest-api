@@ -1,0 +1,7 @@
+#server:
+#  port: 36200
+filesystem:
+  storage-dir: '/Users/emari/Projects/fs_rest_api/testStorage'
+spring:
+  jackson:
+    default-property-inclusion: non_null
