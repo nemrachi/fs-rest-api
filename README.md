@@ -1,5 +1,17 @@
-### Zadanie - FileSystem REST API
+### OpenAPI docs
+http://localhost:8080/v3/api-docs/
 
+
+### File storage configuration
+In ```application.yaml``` set 
+```
+filesystem:
+    storage-dir: '*your\directory\for\file\operations*'
+```
+to your local directory, where file and directory operations will be made.
+
+
+### Zadanie - FileSystem REST API
 **Napíšte Java aplikáciu, ktorá sprístupní file system operácie pomocou REST API.
 Aplikácia podporuje tieto operácie.**
 - Create new Directory
