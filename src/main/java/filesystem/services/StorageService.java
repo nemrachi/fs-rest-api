@@ -5,6 +5,7 @@ import filesystem.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
@@ -77,7 +78,10 @@ public class StorageService {
         if (Files.isRegularFile(dirPath)) {
             throw new IOException(dirPath + " is a file");
         }
-        Files.delete(dirPath);
+        Files.walk(dirPath)
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
     }
 
     public Stream<Path> getDirContent(String dir) throws IOException {
