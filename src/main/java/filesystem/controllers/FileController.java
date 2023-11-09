@@ -1,5 +1,6 @@
 package filesystem.controllers;
 
+import filesystem.aosd.AOSD;
 import filesystem.entities.ErrorResponse;
 import filesystem.entities.Status;
 import filesystem.services.StorageService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("file")
+@AOSD
 public class FileController {
 
     @Autowired
