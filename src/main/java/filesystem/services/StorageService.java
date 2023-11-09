@@ -1,15 +1,13 @@
 package filesystem.services;
 
+import filesystem.aosd.PatternPointcut;
 import filesystem.entities.FileLine;
-import filesystem.utils.FileUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,64 +17,54 @@ import java.util.stream.Stream;
 @Service
 public class StorageService {
 
-    private final String storageDir;
-
-    public StorageService(@Value("${filesystem.storage-dir}") String storageDir) {
-        this.storageDir = storageDir;
-    }
+    public StorageService() { }
 
     //####################### FILE #######################
 
     public void createNewFile(String file) throws IOException {
-        Path filePath = Paths.get(FileUtil.buildPath(storageDir, file));
-        Files.createFile(filePath);
+        Files.createFile(Path.of(file));
     }
 
     public void deleteFile(String file) throws IOException {
-        Path filePath = Paths.get(FileUtil.buildPath(storageDir, file));
-
-        if (Files.isDirectory(filePath)) {
-            throw new IOException(filePath + " is a directory");
+        Path path = Path.of(file);
+        if (Files.isDirectory(path)) {
+            throw new IOException(file + " is a directory");
         }
-        Files.delete(filePath);
+        Files.delete(path);
     }
 
     public String copyFile(String src, String dest) throws IOException {
-        Path srcPath = Paths.get(FileUtil.buildPath(storageDir, src));
-        Path destPath = Paths.get(FileUtil.buildPath(storageDir, dest));
+        Path srcPath = Path.of(src);
+        Path destPath = Path.of(dest);
 
         destPath = destPath.resolve(srcPath.getFileName());
         Files.copy(srcPath, destPath);
 
-        return Paths.get(storageDir).relativize(destPath).toString();
+        return dest;
     }
 
     public String moveFile(String src, String dest) throws IOException {
-        Path srcPath = Paths.get(FileUtil.buildPath(storageDir, src));
-        Path destPath = Paths.get(FileUtil.buildPath(storageDir, dest));
+        Path srcPath = Path.of(src);
+        Path destPath = Path.of(dest);
 
         destPath = destPath.resolve(srcPath.getFileName());
         Files.move(srcPath, destPath);
 
-        return Paths.get(storageDir).relativize(destPath).toString();
+        return dest;
     }
 
     public String getFileContent(String file) throws IOException {
-        Path filePath = Paths.get(FileUtil.buildPath(storageDir, file));
-
-        return Files.readString(filePath);
+        return Files.readString(Path.of(file));
     }
 
     //####################### DIRECTORY #######################
 
     public void createNewDir(String dir) throws IOException {
-        Path dirPath = Paths.get(FileUtil.buildPath(storageDir, dir));
-
-        Files.createDirectory(dirPath);
+        Files.createDirectory(Path.of(dir));
     }
 
     public void deleteDir(String dir) throws IOException {
-        Path dirPath = Paths.get(FileUtil.buildPath(storageDir, dir));
+        Path dirPath = Path.of(dir);
 
         if (Files.isRegularFile(dirPath)) {
             throw new IOException(dirPath + " is a file");
@@ -88,13 +76,12 @@ public class StorageService {
     }
 
     public Stream<Path> getDirContent(String dir) throws IOException {
-        Path dirPath = Paths.get(FileUtil.buildPath(storageDir, dir));
-
-        return Files.list(dirPath);
+        return Files.list(Path.of(dir));
     }
 
+    @PatternPointcut
     public List<FileLine> getPattern(String dir, String patternString) throws IOException {
-        Path dirPath = Paths.get(FileUtil.buildPath(storageDir, dir));
+        Path dirPath = Path.of(dir);
         List<FileLine> found = new ArrayList<>();
         List<String> content;
         Pattern pattern = Pattern.compile(patternString);

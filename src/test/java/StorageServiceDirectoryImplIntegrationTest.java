@@ -64,9 +64,9 @@ public class StorageServiceDirectoryImplIntegrationTest {
         String dirName = "/dir";
         File dir = new File(FileUtil.buildPath(storageDir, dirName));
         List<String> expectedContent = Arrays.asList(
+                Paths.get(FileUtil.buildPath(storageDir, dirName, "file2.txt")).toString(),
                 Paths.get(FileUtil.buildPath(storageDir, dirName, "/dir1")).toString(),
-                Paths.get(FileUtil.buildPath(storageDir, dirName, "file1.txt")).toString(),
-                Paths.get(FileUtil.buildPath(storageDir, dirName, "file2.txt")).toString()
+                Paths.get(FileUtil.buildPath(storageDir, dirName, "file1.txt")).toString()
         );
 
         if (!dir.exists()) {

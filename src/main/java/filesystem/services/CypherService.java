@@ -1,7 +1,5 @@
 package filesystem.services;
 
-import filesystem.utils.FileUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
@@ -10,28 +8,25 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 @Service
 public class CypherService {
 
-    private final String storageDir;
     private final SecretKey secretKey;
     private final byte[] initializationVector;
     private static final String AES = "AES";
     private static final int KEY_SIZE = 256;
     private static final String AES_CIPHER_ALGORITHM = "AES/CBC/PKCS5PADDING";
 
-    public CypherService(@Value("${filesystem.storage-dir}") String storageDir) throws NoSuchAlgorithmException {
-        this.storageDir = storageDir;
+    public CypherService() throws NoSuchAlgorithmException {
         this.secretKey = createKey();
         this.initializationVector = createInitializationVector();
     }
 
     public void encryptFile(String file) throws Exception {
-        Path filePath = Paths.get(FileUtil.buildPath(storageDir, file));
+        Path filePath = Path.of(file);
         Cipher cipher = Cipher.getInstance(AES_CIPHER_ALGORITHM);
         IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
 
@@ -42,7 +37,7 @@ public class CypherService {
     }
 
     public void decryptFile(String file) throws Exception {
-        Path filePath = Paths.get(FileUtil.buildPath(storageDir, file));
+        Path filePath = Path.of(file);
         Cipher cipher = Cipher.getInstance(AES_CIPHER_ALGORITHM);
         IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
 
