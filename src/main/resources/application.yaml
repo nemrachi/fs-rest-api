@@ -1,7 +1,11 @@
 #server:
 #  port: 36200
 filesystem:
-  storage-dir: '*your\directory\for\file\operations*'
+  storage-dir: '/home/emari/Documents/fs-rest-api/testStorage'
 spring:
   jackson:
     default-property-inclusion: non_null
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
